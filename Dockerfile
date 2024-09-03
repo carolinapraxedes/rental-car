@@ -25,8 +25,8 @@ WORKDIR /var/www
 COPY . .
 
 # Instalar dependências do Laravel e do Node.js
-RUN composer install
 RUN npm install
+RUN composer install
 
 # Expor a porta 9000 para o PHP-FPM
 EXPOSE 9000
