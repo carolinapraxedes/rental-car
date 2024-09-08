@@ -1,19 +1,16 @@
 # Use uma imagem PHP-FPM com versão 8.2
 FROM php:8.2-fpm
 
-# Instalar dependências do sistema
-RUN apt-get update && apt-get install -y \
+# Instalar dependências essenciais do sistema e Node.js
+RUN apt-get update --fix-missing && apt-get install -y \
     git \
     curl \
     zip \
     unzip \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    libzip-dev \
     nodejs \
     npm \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+    && docker-php-ext-install pdo_mysql
+
 
 # Instalar Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -25,8 +22,8 @@ WORKDIR /var/www
 COPY . .
 
 # Instalar dependências do Laravel e do Node.js
-RUN npm install
 RUN composer install
+RUN npm install
 
 # Expor a porta 9000 para o PHP-FPM
 EXPOSE 9000

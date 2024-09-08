@@ -11,14 +11,11 @@ services:
     working_dir: /var/www
     volumes:
       - .:/var/www
-      - ./vendor:/var/www/vendor
-      - ./node_modules:/var/www/node_modules
     ports:
       - "8000:8000"  # Porta para o Laravel
       - "5173:5173"  # Porta para o Vite
     depends_on:
       - mysql
-      
 
   # Serviço do MySQL
   mysql:
@@ -45,11 +42,9 @@ services:
     volumes:
       - .:/var/www
       - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
-
     depends_on:
       - app
+      - mysql
 
 volumes:
   db_data:
-
-
