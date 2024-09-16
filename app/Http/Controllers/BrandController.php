@@ -14,7 +14,8 @@ class BrandController extends Controller
      */
     public function index()
     {
-        //
+        $brand = Brand::all();
+        return $brand;
     }
 
     /**
@@ -35,7 +36,9 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $brand = Brand::create($request->all());
+        
+        return $brand;
     }
 
     /**
@@ -46,7 +49,8 @@ class BrandController extends Controller
      */
     public function show(Brand $brand)
     {
-        //
+
+        return $brand;
     }
 
     /**
@@ -69,7 +73,12 @@ class BrandController extends Controller
      */
     public function update(Request $request, Brand $brand)
     {
-        //
+        /*print_r($request->all()); //dados atualizados
+        echo '<hr>';
+        print_r($brand->getAttributes()); //dados antigos
+        */
+        $brand->update($request->all());
+        return $brand;
     }
 
     /**
@@ -80,6 +89,7 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        //
+        $brand->delete();
+        return ['msg'=> 'brand deleted with success'];
     }
 }
