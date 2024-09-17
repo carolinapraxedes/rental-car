@@ -44,13 +44,19 @@ class BrandController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Brand  $brand
+     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function show(Brand $brand)
+    public function show($id)
     {
+        $brand = Brand::find($id);
+        //dd($brand);
 
-        return $brand;
+        if ($brand === null){
+            return ['error' => 'brand not found'];
+        } else {
+            return $brand;
+        }
     }
 
     /**
@@ -68,28 +74,34 @@ class BrandController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Brand  $brand
+     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Brand $brand)
+    public function update(Request $request, $id)
     {
-        /*print_r($request->all()); //dados atualizados
-        echo '<hr>';
-        print_r($brand->getAttributes()); //dados antigos
-        */
-        $brand->update($request->all());
-        return $brand;
+        $brand = Brand::find($id);
+        if($brand ===null) {
+            return ['error' => 'update is not possible. the brand is not exist'];
+        }else{
+            $brand->update($request->all());
+            return $brand;
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Brand  $brand
+     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Brand $brand)
+    public function destroy($id)
     {
-        $brand->delete();
-        return ['msg'=> 'brand deleted with success'];
+        $brand = Brand::find($id);
+        if($brand === null) {
+            return ['error' => 'the brand is not exist. delete is not possible. '];
+        }else{
+            $brand->delete();
+            return ['msg'=> 'brand deleted with success'];
+        }
     }
 }
