@@ -15,7 +15,7 @@ class BrandController extends Controller
     public function index()
     {
         $brand = Brand::all();
-        return $brand;
+        return response()->json($brand,200);
     }
 
     /**
@@ -38,7 +38,7 @@ class BrandController extends Controller
     {
         $brand = Brand::create($request->all());
         
-        return $brand;
+        return response()->json($brand, 201);
     }
 
     /**
@@ -53,9 +53,9 @@ class BrandController extends Controller
         //dd($brand);
 
         if ($brand === null){
-            return ['error' => 'brand not found'];
+            return response()->json(['error' => 'brand not found'],404);
         } else {
-            return $brand;
+            return response()->json($brand,200);
         }
     }
 
@@ -81,10 +81,10 @@ class BrandController extends Controller
     {
         $brand = Brand::find($id);
         if($brand ===null) {
-            return ['error' => 'update is not possible. the brand is not exist'];
+            return response()->json(['error' => 'update is not possible. the brand is not exist'],404);
         }else{
             $brand->update($request->all());
-            return $brand;
+            return response()->json($brand,200);
         }
     }
 
@@ -101,7 +101,7 @@ class BrandController extends Controller
             return ['error' => 'the brand is not exist. delete is not possible. '];
         }else{
             $brand->delete();
-            return ['msg'=> 'brand deleted with success'];
+            return response()->json(['msg'=> 'brand deleted with success'],200);
         }
     }
 }
