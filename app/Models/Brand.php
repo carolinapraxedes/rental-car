@@ -13,7 +13,7 @@ class Brand extends Model
 
     public function rules(){
         return [
-            'name'=> 'required|unique:brands,name|min:3',
+            'name'=> 'required|unique:brands,name,'.$this->id.'|min:3',
             'image' => 'required'
         ];
     }

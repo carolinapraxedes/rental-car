@@ -90,10 +90,12 @@ class BrandController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $brand = Brand::find($id);
+        $brand = $this->brand->find($id);
         if($brand ===null) {
             return response()->json(['error' => 'update is not possible. the brand is not exist'],404);
         }else{
+
+            $request->validate($brand->rules(),$brand->feedback());
             $brand->update($request->all());
             return response()->json($brand,200);
         }
