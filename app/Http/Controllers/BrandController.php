@@ -47,6 +47,8 @@ class BrandController extends Controller
             $this->brand->feedback()
         );
 
+        dd($request->file('image'));
+
         $brand = Brand::create($request->all());
         
         return response()->json($brand, 201);
@@ -90,15 +92,27 @@ class BrandController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $brand = $this->brand->find($id);
+        $brand = Brand::find($id);
         if($brand ===null) {
             return response()->json(['error' => 'update is not possible. the brand is not exist'],404);
-        }else{
-
-            $request->validate($brand->rules(),$brand->feedback());
-            $brand->update($request->all());
-            return response()->json($brand,200);
         }
+        if($request->method() === 'PATCH'){
+            $regrasDinamicas = array();
+
+            //percorre todas as regras definidas no model
+            foreach($brand->rules() as $input => $rule){
+                //coleta apenas as regras aplicaveis aos parametros parciais da requisicao
+                if(array_key_exists($input,$request->all())){
+                    $regrasDinamicas[$input] = $rule;
+                }
+            }
+        }else{
+            $request->validate($brand->rules(),$brand->feedback());
+        }
+        
+        $brand->update($request->all());
+        return response()->json($brand,200);
+        
     }
 
     /**
