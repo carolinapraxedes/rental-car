@@ -47,9 +47,13 @@ class BrandController extends Controller
             $this->brand->feedback()
         );
 
-        dd($request->file('image'));
+        $image = $request->file('image');
+        $image_urn = $image->store('imagens','public');
 
-        $brand = Brand::create($request->all());
+        $brand = $this->brand->create([
+            'name'=> $request->name,
+            'image' => $image_urn
+        ]);
         
         return response()->json($brand, 201);
     }

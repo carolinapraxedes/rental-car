@@ -14,7 +14,7 @@ class Brand extends Model
     public function rules(){
         return [
             'name'=> 'required|unique:brands,name,'.$this->id.'|min:3',
-            'image' => 'required'
+            'image' => 'required|file|mimes:png'
         ];
     }
 
@@ -22,7 +22,8 @@ class Brand extends Model
         return [
             'required' => 'O campo é obrigatório',
             'name.unique' => 'O nome da marca já existe',
-            'name.min' => 'O nome deve ter no mínimo 3 caracteres'
+            'name.min' => 'O nome deve ter no mínimo 3 caracteres',
+            'image.mimes' => 'O arquivo deve ser uma imagem'
         ];
     }
 }

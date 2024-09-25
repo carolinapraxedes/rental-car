@@ -7,3 +7,5 @@ comandos para rodar:
 ```docker exec -ti 357 bash``` - entra no sistema bash. o 357 é o id do container
 ```mysql -u root -p``` - comando para acessar o mysql dentro do bash
 ```use laravel; select * from users; ``` - para verificar o banco e seus usuarios
+
+```php artisan storage:link;`` - comando para a cessar as fotos no storage
