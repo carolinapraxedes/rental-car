@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Vehicle_model;
 
 class Brand extends Model
 {
@@ -26,4 +27,10 @@ class Brand extends Model
             'image.mimes' => 'O arquivo deve ser uma imagem'
         ];
     }
+
+    public function vehicle_model(){
+        //uma marca POSSUI MUITOS modelos
+        return $this->hasMany(vehicle_model);
+    }
+
 }
