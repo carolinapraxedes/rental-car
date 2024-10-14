@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Vehicle_model as Model;
+use App\Models\Vehicle_model;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Storage;
 
 class VehicleModelController extends Controller
 {
     protected $vehicle_model;
-    public function __construct(Model $model){
-        $this->vehicle_model = $model;
+    public function __construct(Vehicle_model $vehicle_model){
+        $this->vehicle_model = $vehicle_model;
     }
 
     /**
@@ -76,6 +77,8 @@ class VehicleModelController extends Controller
         if($vehicle_model === null){
             return response()->json(['error' => 'not found item'],404);
         }
+
+        return response()->json($vehicle_model,200);
     }
 
     /**
@@ -123,7 +126,7 @@ class VehicleModelController extends Controller
         }
 
         $image = $request->file('image');
-        $image_urn = $image->store('images','public');
+        $image_urn = $image->store('images/vehicle_model','public');
 
         $vehicle_model->update([
             'brand_id'=> $request->brand_id,
@@ -150,7 +153,7 @@ class VehicleModelController extends Controller
     {
         $vehicle_model = $this->vehicle_model->find($id);
         if($vehicle_model === null) {
-            return response()->json(['error' => 'the brand is not exist. delete is not possible'],404);
+            return response()->json(['error' => 'the model is not exist. delete is not possible'],404);
         }
         Storage::disk('public')->delete($vehicle_model->image);
 
