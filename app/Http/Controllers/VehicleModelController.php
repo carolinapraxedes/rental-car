@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Vehicle_model;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Storage;
+use Illuminate\Support\Facades\Storage;
 
 class VehicleModelController extends Controller
 {
@@ -42,6 +43,7 @@ class VehicleModelController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate(
             $this->vehicle_model->rules(),
            
@@ -103,7 +105,7 @@ class VehicleModelController extends Controller
     {
         $vehicle_model = $this->vehicle_model->find($id);
         
-        //dd($vehicle_model);
+        //dd("aqui");
         if($vehicle_model === null){
             return response()->json(['erro' => 'its not impossible to update'], 404);
         }
@@ -120,7 +122,8 @@ class VehicleModelController extends Controller
                 }
             }
     
-            dd('teste');
+            //dd('teste');
+            //dd($request->all());
             // Valida apenas os campos presentes no PATCH
             $request->validate($regrasDinamicas);
     
@@ -130,7 +133,7 @@ class VehicleModelController extends Controller
         }
         if($request->file('image')){
             try {
-                Storage::disk('public')->delete($vehicle_model->image);
+                \Storage::disk('public')->delete($vehicle_model->image);
 
                 // Armazena a nova imagem
                 $image = $request->file('image');
@@ -143,14 +146,14 @@ class VehicleModelController extends Controller
             }
         }
         
-        dd($request->all());
+        dd($request->name);
         $vehicle_model->update([
-            'brand_id' => $request->brand_id ?? $vehicle_model->brand_id, // Preserva o valor anterior se não for fornecido
-            'name' => $request->name ?? $vehicle_model->name,
-            'number_doors' => $request->number_doors ?? $vehicle_model->number_doors,
-            'number_passenger' => $request->number_passenger ?? $vehicle_model->number_passenger,
-            'air_bag' => $request->air_bag ?? $vehicle_model->air_bag,
-            'abs' => $request->abs ?? $vehicle_model->abs,
+            'brand_id' => $request->brand_id, // Preserva o valor anterior se não for fornecido
+            'name' => $request->name,
+            'number_doors' => $request->number_doors,
+            'number_passenger' => $request->number_passenger,
+            'air_bag' => $request->air_bag,
+            'abs' => $request->abs,
 
             //'image' => $image_urn,
             // Apenas atualiza o campo 'image' se o $image_urn estiver definido
@@ -172,6 +175,7 @@ class VehicleModelController extends Controller
     public function destroy($id)
     {
         $vehicle_model = $this->vehicle_model->find($id);
+        //dd($vehicle_model->image);
         if($vehicle_model === null) {
             return response()->json(['error' => 'the model is not exist. delete is not possible'],404);
         }
