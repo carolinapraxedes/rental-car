@@ -19,7 +19,7 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brand = Brand::all();
+        $brand = $this->brand->with('vehicle_model')->get();
         return response()->json($brand,200);
     }
 
@@ -66,7 +66,7 @@ class BrandController extends Controller
      */
     public function show($id)
     {
-        $brand = Brand::find($id);
+        $brand = $this->brand->with('vehicle_model')->find($id);
         //dd($brand);
 
         if ($brand === null){
@@ -114,7 +114,10 @@ class BrandController extends Controller
             $request->validate($brand->rules(),$brand->feedback());
         }
         
-        $brand->update($request->all());
+        $brand->update([
+            'name' => $request->name,
+            'image' => $imagem_urn
+        ]);
         return response()->json($brand,200);
         
     }

@@ -30,7 +30,7 @@ class Brand extends Model
 
     public function vehicle_model(){
         //uma marca POSSUI MUITOS modelos
-        return $this->hasMany(vehicle_model);
+        return $this->hasMany(Vehicle_model::class);
     }
 
 }

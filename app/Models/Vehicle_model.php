@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Brand;
 
+
 class Vehicle_model extends Model
 {
     use HasFactory;
@@ -37,7 +38,7 @@ class Vehicle_model extends Model
 
     public function brand(){
         //um modelo pretence a uma marca
-        return $this->belongsTo(brand);
+        return $this->belongsTo(Brand::class);
 
 
     }
