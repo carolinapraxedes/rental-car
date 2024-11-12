@@ -113,7 +113,10 @@ class BrandController extends Controller
         }else{
             $request->validate($brand->rules(),$brand->feedback());
         }
-        
+
+        $brand->fill($request->all());
+        $brand->image = $imagem_urn;
+        dd( $brand->getAttributes()); 
         $brand->update([
             'name' => $request->name,
             'image' => $imagem_urn

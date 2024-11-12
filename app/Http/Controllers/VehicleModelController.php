@@ -19,10 +19,47 @@ class VehicleModelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        return response()->json($this->vehicle_model->with('brand')->get(),200);
+
+        $models = array();
+
+        if($request->has('atributos_brand')){
+            $atributosBrand = $request->atributos_brand;
+            $models = $this->vehicle_model->with('brand:id,'.$atributosBrand );
+        }
+        else{
+            $models = $this->vehicle_model->with('brand');
+        }
+
+        if($request->has('atributos')){
+            $atributos = $request->atributos;
+            //$models = $this->vehicle_model->select('id','name','image')->get();
+            //$atributosBrand = $request->atributos_brand;
+            //dd($atributosBrand);
+
+            /*$models = $this->vehicle_model->selectRaw($atributos)->with('brand')->get();
+                para conseguir recuperar a brand com o with, é necessário passar o brand_id na request
+            ex: localhost:8000/api/vehicle_model?atributos=id,name,brand_id */
+
+
+            $models = $models->selectRaw($atributos)->get();
+            
+            
+            /* filtrando o atributo especifico da brand e smp recupere o id junto
+                $models = $this->vehicle_model->selectRaw($atributos)->with('brand:id,name')->get();
+            */ 
+
+        }else{
+            $models = $models->with('brand')->get();
+        }
+
+        //dd($request->get('atributos'));
+        //return response()->json($this->vehicle_model->with('brand')->get(),200);
+        return response()->json($models,200);
+
+        //all()-> cria obj de consulta + get() = collection
+        //get()-> modifica a consulta ->collection
     }
 
     /**
