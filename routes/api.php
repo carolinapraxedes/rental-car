@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\VehicleModelController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,9 @@ Route::apiResource('vehicle', VehicleController::class);
 Route::apiResource('location', LocationController::class);
 Route::apiResource('brand', BrandController::class);
 Route::apiResource('vehicle_model', VehicleModelController::class);
+
+
+Route::post('login',[AuthController::class,'login']);
+Route::post('logout',[AuthController::class,'logout']);
+Route::post('refresh',[AuthController::class,'refresh']);
+Route::post('me',[AuthController::class,'me']);

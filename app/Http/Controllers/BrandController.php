@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use App\Repositories\BrandRepository;
 
 class BrandController extends Controller
 {
@@ -17,10 +18,26 @@ class BrandController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $brand = $this->brand->with('vehicle_model')->get();
-        return response()->json($brand,200);
+
+        $brandRepository = new BrandRepository($this->brand);
+
+        if($request->has('atributos_modelos')){
+            $atributos_models = 'vehicle_model:id,'.$request->atributos_modelos;
+            $brandRepository = selectAtributosRegistrosRelacionados($atributos_models);
+        }else{
+            
+            $brandRepository->selectAtributosRegistrosRelacionados('vehicle_model');
+        }
+
+        if($request->has('filtro')){
+            $brandRepository->filtro($request->filtro);
+        }
+
+
+        /*$brand = $this->brand->with('vehicle_model')->get();*/
+        return response()->json($brandRepository->getResult(),200);
     }
 
     /**
